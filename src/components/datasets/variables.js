@@ -1,6 +1,7 @@
 const normal = {
   temperature: (name) => name.startsWith("temperature"),
   wind: (name) => name.startsWith("wind"),
+  radar: (name) => name.startsWith("radar"),
   humidity: (name) => name.includes("relative humidity"),
   precipitation: (name) => name === "precipitation in previous hour",
   pressure: (name) => name === "mean sea level pressure",
@@ -33,6 +34,7 @@ const normal = {
 const simple = {
   temperature: (name) => name.startsWith("temperature"),
   wind: (name) => name.startsWith("wind"),
+  radar: (name) => name.startsWith("radar"),
   humidity: (name) => name.includes("relative humidity"),
   precipitation: (name) => name === "precipitation in previous hour",
   pressure: (name) => name === "mean sea level pressure",
