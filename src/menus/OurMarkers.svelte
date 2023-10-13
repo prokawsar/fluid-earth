@@ -8,7 +8,7 @@
   export let centerLongitude;
   export let centerLatitude;
   export let zoom;
-  export let pins;
+  export let ourPins;
   export let griddedData;
   export let griddedUnit;
 
@@ -28,11 +28,13 @@
       })
       // item.geometry.coordinates
     })
+    radarPins = radarPins.slice(0, 10);
     console.log("radars", radarPins.slice(0, 10))
-    radarPins.slice(0, 20).forEach((city) => {
-      dropPin(city)
-    })
-    return fetchJson('/tera/locations.json.br');
+    // radarPins.slice(0, 20).forEach((city) => {
+    //   dropPin(city)
+    // })
+    return radarPins;
+    // return fetchJson('/tera/locations.json.br');
   }
 
   async function onSelect(city) {
@@ -71,8 +73,8 @@
   }
 
   function dropPin(city) {
-    if (!pins.find(pin => pin === city)) {
-      pins = [city, ...pins];
+    if (!ourPins.find(pin => pin === city)) {
+      ourPins = [city, ...ourPins];
     }
   }
 </script>
@@ -80,11 +82,7 @@
 <details open>
 <summary><h2>About This Menu</h2></summary>
 <p>
-Locations on the map can be marked. Hover over the marker or see the section
-below to view information about that location.
-<p>
-To mark a location, hold down the <b>left mouse button</b> on the map, or use
-the following search box.
+This our custom markers
 </p>
 </details>
 
@@ -92,7 +90,7 @@ the following search box.
 <summary><h2>Marked locations</h2></summary>
 <SearchBox {label} {placeholder} {loadData} {onSelect} />
 <LocationsList
-  bind:pins
+  bind:pins={ourPins}
   {griddedData}
   {griddedUnit}
   {moveTo}

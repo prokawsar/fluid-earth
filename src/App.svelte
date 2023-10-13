@@ -10,6 +10,7 @@
   import Datasets from './menus/Datasets.svelte';
   import TimeMachine from './menus/TimeMachine.svelte';
   import Locations from './menus/Locations.svelte';
+  import OurMarkers from './menus/OurMarkers.svelte';
   import Projections from './menus/Projections.svelte';
   import DeveloperOnlyTools from './menus/DeveloperOnlyTools.svelte';
   import Feedback from './menus/Feedback.svelte';
@@ -105,6 +106,7 @@
 
   let utc = false;
   let pins = hash.pins ?? [];
+  let ourPins = [];
   let cursor = null;
 
   $: portraitBasedZoom = $mobile;
@@ -115,6 +117,7 @@
     { name: 'Time Machine', icon: Calendar },
     { name: 'Projections', icon: ChoroplethMap },
     kioskMode ? null : { name: 'Markers', icon: Location },
+    kioskMode ? null : { name: 'Our Markers', icon: Location },
     kioskMode ? null : { name: 'Feedback', icon: RequestQuote },
     __production__ ? null : { name: 'Developer-Only Tools', icon: Debug },
   ].filter(m => m !== null);
@@ -318,6 +321,16 @@
       {griddedUnit}
     />
   </Menu>
+  <Menu bind:openedMenu menuName="Our Markers">
+    <OurMarkers
+      bind:centerLongitude
+      bind:centerLatitude
+      bind:zoom
+      bind:ourPins
+      {griddedData}
+      {griddedUnit}
+    />
+  </Menu>
   <Menu bind:openedMenu menuName="Feedback">
     <Feedback
     />
@@ -385,6 +398,7 @@
     />
     <Queries
       bind:pins
+      bind:ourPins
       {cursor}
       {forwardProjectionFunction}
       {griddedName}

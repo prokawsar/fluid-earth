@@ -62,10 +62,10 @@ class Dataset {
     if (cachedResponse) return cachedResponse;
 
     // __fev2r_api__ is '' by default, can be replaced by env variable
-    let url = __fev2r_api__ + this.path + dateString + ".fp16.br";
-
+    let url = this.path + dateString + ".fp16.br";
     // workaround for ':' being an illegal character for filenames on Windows,
     if (__using_local_data_files__ && __windows__) url = url.replace(/:/g, "_");
+    console.log("url:", url);
 
     let byteArray = new Uint8Array(this.bytesPerFile);
     let offset = 0;
@@ -73,12 +73,18 @@ class Dataset {
 
     status.total += this.bytesPerFile;
     this.constructor.notifyFetchListeners();
+    // if (url.indexOf("gfs-temperature") >= 0) {
+    //   console.log("mem");
+    //   url =
+    //     "https://ws.kepler51.com/prod/moby/v1/twc_currents_hourly/TEMP/2m/2023-10-13T00:00:00Z/2023-10-13T00:00:00Z/wmb?BBOX=-180,-90,180,90&metric=false&WIDTH=1440&HEIGHT=721&REQUEST=GetData&float_width=16&version=latest&encoding=gzip";
+    // }
 
     try {
       let response = await fetch(url, {
         signal,
         headers: { "Cache-Control": "no-cache" },
       });
+      console.log("response: ", response);
       throwIfNotOk(response);
       let reader = response.body.getReader();
 
