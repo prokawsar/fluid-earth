@@ -22,17 +22,14 @@
     radars = await res.json();
     radars.features.map((item) => {
       radarPins.push({
-        label: item.properties.state,
+        label: item.properties.state || 'no state',
         longitude: item.geometry.coordinates[0],
         latitude: item.geometry.coordinates[1]
       })
       // item.geometry.coordinates
     })
-    radarPins = radarPins.slice(0, 10);
-    console.log("radars", radarPins.slice(0, 10))
-    // radarPins.slice(0, 20).forEach((city) => {
-    //   dropPin(city)
-    // })
+    // radarPins = radarPins.slice(0, 50);
+    // console.log("radars", radarPins.slice(0, 10))
     return radarPins;
     // return fetchJson('/tera/locations.json.br');
   }
