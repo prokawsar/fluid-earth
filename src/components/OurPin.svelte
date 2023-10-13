@@ -3,6 +3,7 @@
   import PinIcon from 'carbon-icons-svelte/lib/LocationFilled.svelte';
   import { labelByName, prettyValue } from '../units.js';
   import { prettyLatLon } from '../utility.js';
+  import StopFilledAlt from "carbon-icons-svelte/lib/StopFilledAlt.svelte";
 
   export let pins;
   export let pin;
@@ -39,7 +40,8 @@
     on:mouseenter={() => hovering = true}
     on:mouseleave={() => hovering = false}
   >
-    <PinIcon size={32} />
+    <!-- <PinIcon size={32} /> -->
+    <StopFilledAlt size={18} />
   </button>
   {#if hovering}
     <div class="caption">
@@ -78,7 +80,7 @@
   div.pin > :global(.marker) {
     top: -30px;
     left: -16px;
-    color: red;
+    color: rgb(199, 73, 234);
     cursor: pointer;
     filter: drop-shadow(0 0 0.25em black);
     display: block;
