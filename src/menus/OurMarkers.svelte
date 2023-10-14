@@ -12,30 +12,33 @@
   export let griddedData;
   export let griddedUnit;
 
-  let label = 'Add pin by country, city, or region:';
+  let label = 'Add pin by country, city, or state:';
   let placeholder = 'Columbus, Ohio, United States';
 
   let radars;
   let radarPins = [];
+  let polygons = [];
+  
   async function loadData() {
     const res = await fetch('http://localhost:5173/prd.json');
     radars = await res.json();
+
     radars.features.map((item) => {
-      radarPins.push({
-        label: item.properties.state || 'no state',
-        longitude: item.geometry.coordinates[0],
-        latitude: item.geometry.coordinates[1]
-      })
-      // item.geometry.coordinates
+      if(item.geometry.type == 'Point'){
+        radarPins.push({
+          label: item.properties.city || item.properties.state || item.properties.address || 'no label',
+          longitude: item.geometry.coordinates[0],
+          latitude: item.geometry.coordinates[1]
+        })
+      }
     })
-    // radarPins = radarPins.slice(0, 50);
-    // console.log("radars", radarPins.slice(0, 10))
+    console.log("radars", radarPins)
     return radarPins;
     // return fetchJson('/tera/locations.json.br');
   }
 
   async function onSelect(city) {
-    await moveTo(city);
+    // await moveTo(city);
     dropPin(city);
   }
 
