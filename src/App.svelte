@@ -88,6 +88,7 @@
 
   let vectorData = { objects: {} };
   let vectorColors = {};
+  let customVector = { geometries: []}
 
   let griddedData = griddedDataset.emptyData;
   let griddedName = griddedDataset.name;
@@ -227,6 +228,17 @@
   fetchVectorData().then(fadeSplashScreen);
 
   async function fetchVectorData() {
+    let myPolygon = await fetchPreloadedJson('/dev.json');
+    
+    customVector = {type: 'GeometryCollection', geometries: []};
+    myPolygon.features.map((item) => {
+      if(item.geometry.type == 'Polygon'){
+        customVector.geometries.push(item.geometry.coordinates[0])
+      }
+    })
+    // getting first polygon only
+    customVector.geometries = customVector.geometries.splice(0, 1)
+
     vectorData = await fetchPreloadedJson('/tera/topology.json.br');
     vectorColors = {
       ne_50m_coastline: [255, 255, 255, 1],
@@ -234,6 +246,7 @@
       ne_50m_rivers_lake_centerlines: [255, 255, 255, 0.5],
       ne_50m_graticules_10: [255, 255, 255, 0.1],
     };
+    console.log("vectorData:", vectorData)
   }
 
   function fadeSplashScreen() {
@@ -363,6 +376,7 @@
     {particleDisplay}
     {vectorData}
     {vectorColors}
+    {customVector}
     bind:forwardProjectionFunction
     bind:inverseProjectionFunction
     bind:canvasRatio
