@@ -15,23 +15,7 @@
   let label = 'Add pin by country, city, or region:';
   let placeholder = 'Columbus, Ohio, United States';
 
-  let radars;
-  let radarPins = [];
   async function loadData() {
-    const res = await fetch('http://localhost:5173/prd.json');
-    radars = await res.json();
-    radars.features.map((item) => {
-      radarPins.push({
-        label: item.properties.state,
-        longitude: item.geometry.coordinates[0],
-        latitude: item.geometry.coordinates[1]
-      })
-      // item.geometry.coordinates
-    })
-    console.log("radars", radarPins.slice(0, 10))
-    radarPins.slice(0, 20).forEach((city) => {
-      dropPin(city)
-    })
     return fetchJson('/tera/locations.json.br');
   }
 
