@@ -18,9 +18,9 @@
   let radars;
   let radarPins = [];
   let polygons = [];
-  
+
   async function loadData() {
-    const res = await fetch('http://localhost:5173/prd.json');
+    const res = await fetch('http://localhost:5173/dev.json');
     radars = await res.json();
 
     radars.features.map((item) => {
@@ -30,9 +30,12 @@
           longitude: item.geometry.coordinates[0],
           latitude: item.geometry.coordinates[1]
         })
+      }else if(item.geometry.type == 'Polygon'){
+        polygons.push(item.geometry.coordinates[0])
       }
     })
     console.log("radars", radarPins)
+    console.log("polygons", polygons)
     return radarPins;
     // return fetchJson('/tera/locations.json.br');
   }
