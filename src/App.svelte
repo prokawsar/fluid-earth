@@ -88,7 +88,7 @@
 
   let vectorData = { objects: {} };
   let vectorColors = {};
-  let customVector = { geometries: []}
+  let customVector = { geometries: [] }
 
   let griddedData = griddedDataset.emptyData;
   let griddedName = griddedDataset.name;

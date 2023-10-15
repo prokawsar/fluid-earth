@@ -60,7 +60,7 @@
 
   export let vectorData = { objects: {} };
   export let vectorColors = {};
-  export let customVector = {};
+  export let customVector = { geometries: [] }
 
   let clientWidth, clientHeight;
 
