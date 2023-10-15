@@ -237,8 +237,8 @@
       }
     })
     // getting first polygon only
-    customVector.geometries = customVector.geometries.splice(0, 1)
-
+    // customVector.geometries = customVector.geometries.splice(0, 1)
+    console.log("custom vector:", customVector)
     vectorData = await fetchPreloadedJson('/tera/topology.json.br');
     vectorColors = {
       ne_50m_coastline: [255, 255, 255, 1],

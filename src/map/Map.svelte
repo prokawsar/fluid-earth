@@ -118,7 +118,7 @@
   $: mapBackground.scale = griddedScale;
   $: mapBackground.baseColor = griddedBaseColor;
   $: mapBackground.vectorData = vectorData;
-  $: mapBackground.customCoords = customVector.geometries;
+  $: mapBackground.customVector = customVector;
 
   let particleSimulator = {};
   $: particleSimulator.data = particleData;
@@ -164,7 +164,7 @@
       scale: griddedScale,
       baseColor: griddedBaseColor,
       vectorData: vectorData,
-      customCoords: customVector.geometries
+      customVector: customVector
     });
 
     particleSimulator = new ParticleSimulator(particleGl, {

@@ -30,7 +30,7 @@ export default class MapBackground {
 
     this._programs = this._createPrograms();
     this._buffers = this._createBuffers(options.vectorData);
-    this._createVectorBuffers(options.vectorData, options.customCoords[0]);
+    // this._buffers = this._customVector(options.customVector);
     this._textures = this._createTextures();
     this._framebuffers = this._createFramebuffers();
 
@@ -142,17 +142,21 @@ export default class MapBackground {
     };
   }
 
-  _createVectorBuffers(data, customCoords = []) {
+  _createVectorBuffers(data) {
     let buffers = {};
-    console.log("custom coords", customCoords);
     for (const [name, obj] of Object.entries(data.objects)) {
       if (name == "ne_50m_lakes") {
         // console.log("topo data:", obj);
         buffers[name] = createBufferInfoFromTopojson(this._gl, data, obj);
       }
     }
-    buffers["custom_polygon"] = createBufferInfoPoints(this._gl, customCoords);
+    return buffers;
+  }
 
+  _customVector(customCoords) {
+    let buffers = {};
+    console.log("custom coords", customCoords);
+    buffers["custom_polygon"] = createBufferInfoPoints(this._gl, customCoords);
     console.log("vector buffers: ", buffers);
     return buffers;
   }
@@ -285,15 +289,15 @@ function createBufferInfoFromTopojson(gl, data, object) {
 
 function createBufferInfoPoints(gl, coordinates) {
   let points = [];
-  console.log("cords", coordinates);
+  console.log("cords", coordinates.geometries);
   // return;
 
-  for (const line of coordinates) {
+  for (const line of coordinates.geometries) {
     for (let i = 0; i < line.length - 1; i++) {
-      points.push(line[i], 0, line[i + 1], 1);
+      points.push(...line[i], 0, ...line[i + 1], 1);
     }
   }
   return twgl.createBufferInfoFromArrays(gl, {
-    a_lonLat: { numComponents: 4, data: points },
+    a_lonLat: { numComponents: 3, data: points },
   });
 }
