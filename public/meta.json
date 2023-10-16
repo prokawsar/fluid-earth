@@ -1,0 +1,15 @@
+{
+  "layerDtos": [
+    {
+      "gid": 1,
+      "createdAt": "2022-10-20T12:30:21.607434Z",
+      "updatedAt": "2022-10-20T12:30:21.607434Z",
+      "definition": "{\"name\": \"temp\", \"title\": \"Temperature\", \"layers\": [{\"var\": \"TEMP\", \"elev\": \"2m\", \"name\": \"temp\", \"type\": \"extendedTile\", \"model\": \"twc_currents_hourly\", \"title\": \"Temperature\", \"legend\": {\"title\": \"Temperature\", \"legendImage\": \"${config.imageResourcesUrl}heat_index_legend.svg\"}, \"zIndex\": 2, \"opacity\": 0.5, \"initIndex\": 0, \"queryable\": true, \"tileUrlNo\": 1, \"thresholds\": [{\"value\": -40, \"comparator\": \"lt\"}, {\"value\": -32, \"comparator\": \"lt\"}, {\"value\": -12, \"comparator\": \"lt\"}, {\"value\": 0, \"comparator\": \"lt\"}, {\"value\": 32, \"comparator\": \"gt\"}, {\"value\": 38, \"comparator\": \"gt\"}, {\"value\": 46, \"comparator\": \"gt\"}], \"onlyHistory\": true, \"defaultVisibility\": false}]}",
+      "layerType": "kepler",
+      "defaultLayerGroupName": "Current Weather",
+      "layerGroupName": "Current Weather",
+      "isVisible": true
+    }
+  ],
+  "latestLayerCreatedDate": "2022-10-24T17:48:44.098387Z"
+}
