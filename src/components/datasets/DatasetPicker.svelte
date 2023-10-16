@@ -28,7 +28,7 @@
   $: heights    = Object.keys(hFilters);
   $: animations = Object.keys(aFilters);
 
-  let topic, variable, height, animation;
+  let topic, variable, height, animation, kepler;
 
   let previousTopic;
   $: if (previousTopic !== topic) {
@@ -121,6 +121,14 @@
 <ChipGroup
   options={animationOptions}
   bind:selected={animation}
+  on:select={handleSelect}
+  {iconsMap}
+/>
+
+<h3>Kepler51</h3>
+<ChipGroup
+  options={['Temperature']}
+  bind:selected={kepler}
   on:select={handleSelect}
   {iconsMap}
 />
