@@ -4,6 +4,8 @@
   import Tweener from '../tweener.js';
   import { fetchJson } from '../utility.js';
   import { cubicOut } from 'svelte/easing';
+  import Button from '../components/Button.svelte';
+  import { slide, fade } from 'svelte/transition';
 
   export let centerLongitude;
   export let centerLatitude;
@@ -20,23 +22,30 @@
   let polygons = [];
 
   async function loadData() {
-    const res = await fetch('http://localhost:5173/dev.json');
-    radars = await res.json();
-
-    radars.features.map((item) => {
-      if(item.geometry.type == 'Point'){
-        radarPins.push({
-          label: item.properties.city || item.properties.state || item.properties.address || 'no label',
-          longitude: item.geometry.coordinates[0],
-          latitude: item.geometry.coordinates[1]
-        })
-      }else if(item.geometry.type == 'Polygon'){
-        polygons.push(item.geometry.coordinates[0])
-      }
-    })
-    console.log("radars", radarPins)
-    console.log("polygons", polygons)
-    return radarPins;
+    if(!radars){
+      const res = await fetch('http://localhost:5173/dev.json');
+      radars = await res.json();
+    }else{
+      radars.features.map((item) => {
+        if(item.geometry.type == 'Point'){
+          radarPins.push({
+            label: item.properties.city || item.properties.state || item.properties.address || 'no label',
+            longitude: item.geometry.coordinates[0],
+            latitude: item.geometry.coordinates[1]
+          })
+        }else if(item.geometry.type == 'Polygon'){
+          polygons.push(item.geometry.coordinates[0])
+        }
+      })
+      
+      radarPins = radarPins.slice(0, 10)
+      console.log("radars", radarPins)
+      console.log("polygons", polygons)
+      radarPins.forEach((i) => {
+        dropPin(i)
+      })
+    }
+    // return radarPins;
     // return fetchJson('/tera/locations.json.br');
   }
 
@@ -82,20 +91,16 @@
   }
 </script>
 
-<details open>
-<summary><h2>About This Menu</h2></summary>
-<p>
-This our custom markers
-</p>
-</details>
-
-<details open>
-<summary><h2>Marked locations</h2></summary>
-<SearchBox {label} {placeholder} {loadData} {onSelect} />
-<LocationsList
-  bind:pins={ourPins}
-  {griddedData}
-  {griddedUnit}
-  {moveTo}
-/>
-</details>
+<Button action={loadData}>
+  Fetch Assets
+</Button>
+<br />
+{#if ourPins.length > 1}
+  <div transition:slide>
+  <Button secondary full transition action={() => ourPins = []}>
+    Remove all pins
+  </Button>
+  </div>
+{:else if ourPins.length === 0}
+  <p transition:fade>There are currently no marked locations.</p>
+{/if}

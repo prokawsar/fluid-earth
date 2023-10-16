@@ -10,7 +10,7 @@
   import Datasets from './menus/Datasets.svelte';
   import TimeMachine from './menus/TimeMachine.svelte';
   import Locations from './menus/Locations.svelte';
-  import OurMarkers from './menus/OurMarkers.svelte';
+  import KeplerMenu from './menus/Kepler.svelte';
   import Projections from './menus/Projections.svelte';
   import DeveloperOnlyTools from './menus/DeveloperOnlyTools.svelte';
   import Feedback from './menus/Feedback.svelte';
@@ -37,6 +37,7 @@
   import ChoroplethMap from 'carbon-icons-svelte/lib/ChoroplethMap.svelte';
   import RequestQuote from 'carbon-icons-svelte/lib/RequestQuote.svelte';
   import Debug from 'carbon-icons-svelte/lib/Debug.svelte';
+  import Kepler from 'carbon-icons-svelte/lib/Alarm.svelte';
 
   export let gDatasets;
   export let pDatasets;
@@ -117,7 +118,7 @@
     { name: 'Time Machine', icon: Calendar },
     { name: 'Projections', icon: ChoroplethMap },
     kioskMode ? null : { name: 'Markers', icon: Location },
-    kioskMode ? null : { name: 'Our Markers', icon: Location },
+    kioskMode ? null : { name: 'Kepler51', icon: Kepler },
     kioskMode ? null : { name: 'Feedback', icon: RequestQuote },
     __production__ ? null : { name: 'Developer-Only Tools', icon: Debug },
   ].filter(m => m !== null);
@@ -321,8 +322,8 @@
       {griddedUnit}
     />
   </Menu>
-  <Menu bind:openedMenu menuName="Our Markers">
-    <OurMarkers
+  <Menu bind:openedMenu menuName="Kepler51">
+    <KeplerMenu
       bind:centerLongitude
       bind:centerLatitude
       bind:zoom
