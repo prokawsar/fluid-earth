@@ -1,13 +1,13 @@
-import * as twgl from 'twgl.js';
-import * as topojson from 'topojson-client';
+import * as twgl from "twgl.js";
+import * as topojson from "topojson-client";
 
-import griddedVert from './gridded.vert';
-import griddedFrag from './gridded.frag';
-import vectorVert from './vector.vert';
-import vectorFrag from './vector.frag';
-import colormapFrag from './colormap.frag';
+import griddedVert from "./gridded.vert";
+import griddedFrag from "./gridded.frag";
+import vectorVert from "./vector.vert";
+import vectorFrag from "./vector.frag";
+import colormapFrag from "./colormap.frag";
 
-import { glDraw, griddedArrays } from './webgl.js';
+import { glDraw, griddedArrays } from "./webgl.js";
 
 export default class MapBackground {
   constructor(gl, options) {
@@ -24,7 +24,9 @@ export default class MapBackground {
     this._gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     this._maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
     this._dataTextureDimensions = getDataTextureDimensions(
-      this._data, this._maxTextureSize);
+      this._data,
+      this._maxTextureSize
+    );
 
     this._programs = this._createPrograms();
     this._buffers = this._createBuffers(options.vectorData);
@@ -38,12 +40,14 @@ export default class MapBackground {
   set data(d) {
     this._data = d;
 
-    this._textures.gridded.forEach(t => this._gl.deleteTexture(t));
-    this._textures.data.forEach(t => this._gl.deleteTexture(t));
+    this._textures.gridded.forEach((t) => this._gl.deleteTexture(t));
+    this._textures.data.forEach((t) => this._gl.deleteTexture(t));
     this._gl.deleteFramebuffer(this._framebuffers.gridded.framebuffer);
 
     this._dataTextureDimensions = getDataTextureDimensions(
-      this._data, this._maxTextureSize);
+      this._data,
+      this._maxTextureSize
+    );
 
     this._textures.gridded = this._createGriddedTextures();
     this._textures.data = this._createDataTextures();
@@ -74,7 +78,9 @@ export default class MapBackground {
   }
 
   set vectorData(d) {
-    Object.values(this._buffers.vectors).forEach(vector =>  {
+    console.log("topo:", this._buffers.vectors);
+    Object.values(this._buffers.vectors).forEach((vector) => {
+      console.log("vector", vector);
       this._gl.deleteBuffer(vector.indices);
     });
     this._buffers.vectors = this._createVectorBuffers(d);
@@ -106,10 +112,16 @@ export default class MapBackground {
     for (const [name, color] of Object.entries(colors)) {
       let bufferInfo = this._buffers.vectors[name];
       if (bufferInfo !== undefined) {
-        glDraw(this._gl, this._programs.vector, bufferInfo, {
-          u_color: color.map((v, i) => i === 3 ? v : v / 255),
-          ...sharedUniforms,
-        }, this._gl.LINES);
+        glDraw(
+          this._gl,
+          this._programs.vector,
+          bufferInfo,
+          {
+            u_color: color.map((v, i) => (i === 3 ? v : v / 255)),
+            ...sharedUniforms,
+          },
+          this._gl.LINES
+        );
       }
     }
   }
@@ -135,7 +147,10 @@ export default class MapBackground {
     let buffers = {};
 
     for (const [name, obj] of Object.entries(data.objects)) {
-      buffers[name] = createBufferInfoFromTopojson(this._gl, data, obj);
+      console.log("buffer name", name);
+      if (name == "ne_50m_rivers_lake_centerlines") {
+        buffers[name] = createBufferInfoFromTopojson(this._gl, data, obj);
+      }
     }
     return buffers;
   }
@@ -162,20 +177,20 @@ export default class MapBackground {
 
   _createDataTextures() {
     let { floatArray } = this._data;
-    let halfFloat = floatArray.constructor.name !== 'Float32Array';
+    let halfFloat = floatArray.constructor.name !== "Float32Array";
     let options = {
-      type:           halfFloat ? this._gl.HALF_FLOAT : this._gl.FLOAT,
+      type: halfFloat ? this._gl.HALF_FLOAT : this._gl.FLOAT,
       internalFormat: halfFloat ? this._gl.R16F : this._gl.R32F,
       format: this._gl.RED,
       minMag: this._gl.NEAREST, // don't filter between data points
     };
 
     let offset = 0;
-    floatArray = halfFloat ? new Uint16Array(floatArray.buffer): floatArray;
+    floatArray = halfFloat ? new Uint16Array(floatArray.buffer) : floatArray;
 
     return this._dataTextureDimensions.map(({ width, height }) => {
       let start = offset;
-      let end = start + (width * height);
+      let end = start + width * height;
       offset = end;
 
       let src;
@@ -186,7 +201,7 @@ export default class MapBackground {
         src.set(floatArray.subarray(start, end));
       }
 
-      return twgl.createTexture(this._gl, { src, width, height, ...options});
+      return twgl.createTexture(this._gl, { src, width, height, ...options });
     });
   }
 
@@ -202,12 +217,12 @@ export default class MapBackground {
 
   _createFramebuffers() {
     return {
-      gridded: this._dataTextureDimensions.map(({ width, height}, i) => {
+      gridded: this._dataTextureDimensions.map(({ width, height }, i) => {
         return twgl.createFramebufferInfo(
           this._gl,
           [{ attachment: this._textures.gridded[i] }],
           width,
-          height,
+          height
         );
       }),
     };
@@ -225,8 +240,8 @@ export default class MapBackground {
         u_colormap: this._textures.colormap,
         u_colormapN: this._colormap.lut.length,
         u_domain: this._domain,
-        u_scale: this._scale === 'log' ? 1 : 0,
-        u_baseColor: this._baseColor.map((v, i) => i === 3 ? v : v / 255),
+        u_scale: this._scale === "log" ? 1 : 0,
+        u_baseColor: this._baseColor.map((v, i) => (i === 3 ? v : v / 255)),
       });
     }
 
@@ -255,13 +270,20 @@ function getDataTextureDimensions(data, max) {
 function createBufferInfoFromTopojson(gl, data, object) {
   let mesh = topojson.mesh(data, object);
   let points = [];
+  console.log("mesh data", mesh.coordinates);
 
   for (const line of mesh.coordinates) {
     for (let i = 0; i < line.length - 1; i++) {
+      // line = [42.2222, 22.22333]
       points.push(...line[i], 0, ...line[i + 1], 1);
     }
+    // break;
   }
+  console.log("points", points);
   return twgl.createBufferInfoFromArrays(gl, {
-    a_lonLat: { numComponents: 3, data: points },
+    a_lonLat: {
+      numComponents: 3,
+      data: points,
+    },
   });
 }

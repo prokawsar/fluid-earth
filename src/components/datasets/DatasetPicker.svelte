@@ -80,6 +80,7 @@
     updateDatasets();
   }
   async function autoSelect() {
+    console.log("seelcted variable", variable)
     if (!variableOptions.includes(variable)) variable = variableOptions[0];
     await tick();
     if (!heightOptions.includes(height)) height = heightOptions[0];
