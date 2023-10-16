@@ -36,6 +36,7 @@
   import ChoroplethMap from 'carbon-icons-svelte/lib/ChoroplethMap.svelte';
   import RequestQuote from 'carbon-icons-svelte/lib/RequestQuote.svelte';
   import Debug from 'carbon-icons-svelte/lib/Debug.svelte';
+  import { tick } from 'svelte';
 
   export let gDatasets;
   export let pDatasets;
@@ -236,6 +237,7 @@
         customVector.geometries.push(item.geometry.coordinates[0])
       }
     })
+    await tick();
     // getting first polygon only
     // customVector.geometries = customVector.geometries.splice(0, 1)
     console.log("custom vector:", customVector)
