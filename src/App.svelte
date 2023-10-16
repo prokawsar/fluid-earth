@@ -28,7 +28,7 @@
   import { simplify, translate } from './smode.js';
   import { currentDate, mobile } from './stores.js';
   import { getUnitFromDial } from './units.js';
-  import { fetchPreloadedJson } from './utility.js';
+  import { fetchJson, fetchPreloadedJson } from './utility.js';
 
   import Help from 'carbon-icons-svelte/lib/Help.svelte';
   import Location from 'carbon-icons-svelte/lib/Location.svelte';
@@ -38,6 +38,7 @@
   import RequestQuote from 'carbon-icons-svelte/lib/RequestQuote.svelte';
   import Debug from 'carbon-icons-svelte/lib/Debug.svelte';
   import Kepler from 'carbon-icons-svelte/lib/Globe.svelte';
+  import { onMount } from 'svelte';
 
   export let gDatasets;
   export let pDatasets;
@@ -110,6 +111,19 @@
   let ourPins = [];
   let cursor = null;
 
+  onMount(async () => {
+    // loading meta.json
+    let meta = await fetchJson('http://localhost:5173/meta.json');
+    let layer = JSON.parse(meta.layerDtos[0].definition);
+    // console.log("meta", JSON.parse(meta.layerDtos[0].definition))
+    let model, elev, vaar, title;
+    model = layer.layers[0].model;
+    elev = layer.layers[0].elev;
+    vaar = layer.layers[0].var;
+    title = layer.title;
+
+    console.log(title, elev, vaar, model)
+  })
   $: portraitBasedZoom = $mobile;
 
   $: menus = [
