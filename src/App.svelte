@@ -37,7 +37,7 @@
   import ChoroplethMap from 'carbon-icons-svelte/lib/ChoroplethMap.svelte';
   import RequestQuote from 'carbon-icons-svelte/lib/RequestQuote.svelte';
   import Debug from 'carbon-icons-svelte/lib/Debug.svelte';
-  import Kepler from 'carbon-icons-svelte/lib/Alarm.svelte';
+  import Kepler from 'carbon-icons-svelte/lib/Globe.svelte';
 
   export let gDatasets;
   export let pDatasets;
