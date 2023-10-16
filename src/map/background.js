@@ -147,10 +147,7 @@ export default class MapBackground {
     let buffers = {};
 
     for (const [name, obj] of Object.entries(data.objects)) {
-      console.log("buffer name", name);
-      if (name == "ne_50m_rivers_lake_centerlines") {
-        buffers[name] = createBufferInfoFromTopojson(this._gl, data, obj);
-      }
+      buffers[name] = createBufferInfoFromTopojson(this._gl, data, obj);
     }
     return buffers;
   }
@@ -270,16 +267,14 @@ function getDataTextureDimensions(data, max) {
 function createBufferInfoFromTopojson(gl, data, object) {
   let mesh = topojson.mesh(data, object);
   let points = [];
-  console.log("mesh data", mesh.coordinates);
 
+  // console.log("Mesh points: ", mesh.coordinates)
   for (const line of mesh.coordinates) {
     for (let i = 0; i < line.length - 1; i++) {
-      // line = [42.2222, 22.22333]
       points.push(...line[i], 0, ...line[i + 1], 1);
     }
     // break;
   }
-  console.log("points", points);
   return twgl.createBufferInfoFromArrays(gl, {
     a_lonLat: {
       numComponents: 3,
