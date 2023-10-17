@@ -88,17 +88,17 @@
     if (!ourPins.find(pin => pin === city)) {
       ourPins = [city, ...ourPins];
     }
-  }
+  }
 </script>
 
-<Button action={loadData}>
-  Fetch Assets
+<Button action={loadData} full>
+  {radars ? 'Draw Markers' : 'Fetch Assets'}
 </Button>
 <br />
 {#if ourPins.length > 1}
   <div transition:slide>
   <Button secondary full transition action={() => ourPins = []}>
-    Remove all pins
+    Remove all markers
   </Button>
   </div>
 {:else if ourPins.length === 0}
