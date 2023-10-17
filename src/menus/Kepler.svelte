@@ -1,6 +1,8 @@
 <script>
   import SearchBox from '../components/SearchBox.svelte';
   import LocationsList from '../components/LocationsList.svelte';
+
+  import ChipGroup from '../components/ChipGroup.svelte';
   import Tweener from '../tweener.js';
   import { fetchJson } from '../utility.js';
   import { cubicOut } from 'svelte/easing';
@@ -13,9 +15,6 @@
   export let ourPins;
   export let griddedData;
   export let griddedUnit;
-
-  let label = 'Add pin by country, city, or state:';
-  let placeholder = 'Columbus, Ohio, United States';
 
   let radars;
   let radarPins = [];
@@ -39,8 +38,7 @@
       })
       
       radarPins = radarPins.slice(0, 10)
-      console.log("radars", radarPins)
-      console.log("polygons", polygons)
+      // console.log("radars", radarPins)
       radarPins.forEach((i) => {
         dropPin(i)
       })
@@ -89,9 +87,11 @@
       ourPins = [city, ...ourPins];
     }
   }
+
+  let kepler;
 </script>
 
-<Button action={loadData} full>
+<Button action={loadData} full tip={radars ? '' : 'dev.json'}>
   {radars ? 'Draw Markers' : 'Fetch Assets'}
 </Button>
 <br />
@@ -104,3 +104,11 @@
 {:else if ourPins.length === 0}
   <p transition:fade>There are currently no marked locations.</p>
 {/if}
+
+<hr />
+<h3>Temperature</h3>
+<ChipGroup
+  options={['Wind', 'Temperature']}
+  bind:selected={kepler}
+  on:select={() => console.log(kepler)}
+/>

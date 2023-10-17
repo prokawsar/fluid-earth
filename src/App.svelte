@@ -111,8 +111,7 @@
   let ourPins = [];
   let cursor = null;
 
-  onMount(async () => {
-    // loading meta.json
+  const fetchMetaJson = async () => {
     let meta = await fetchJson('http://localhost:5173/meta.json');
     let layer = JSON.parse(meta.layerDtos[0].definition);
     // console.log("meta", JSON.parse(meta.layerDtos[0].definition))
@@ -122,7 +121,25 @@
     vaar = layer.layers[0].var;
     title = layer.title;
 
-    console.log(title, elev, vaar, model)
+    return {
+      title, elev, vaar, model
+    }
+  }
+  fetchMetaJson().then(data => {
+    console.log(data)
+  });
+  onMount(async () => {
+    // loading meta.json
+    // let meta = await fetchJson('http://localhost:5173/meta.json');
+    // let layer = JSON.parse(meta.layerDtos[0].definition);
+    // // console.log("meta", JSON.parse(meta.layerDtos[0].definition))
+    // let model, elev, vaar, title;
+    // model = layer.layers[0].model;
+    // elev = layer.layers[0].elev;
+    // vaar = layer.layers[0].var;
+    // title = layer.title;
+
+    // console.log(title, elev, vaar, model)
   })
   $: portraitBasedZoom = $mobile;
 
