@@ -66,7 +66,7 @@ class Dataset {
     // workaround for ':' being an illegal character for filenames on Windows,
     if (__using_local_data_files__ && __windows__) url = url.replace(/:/g, "_");
     if (kepler) {
-      url = `https://ws.kepler51.com/prod/moby/v1/${kepler.model}/${kepler.vaar}/${kepler.elev}/2023-10-13T00:00:00Z/2023-10-13T00:00:00Z/wmb?BBOX=-180,-90,180,90&metric=false&WIDTH=1440&HEIGHT=721&REQUEST=GetData&float_width=16&version=latest&encoding=gzip`;
+      url = `https://ws.kepler51.com/prod/moby/v1/${kepler.model}/${kepler.vaar}/${kepler.elev}/${kepler.reference_time}/${kepler.reference_time}/wmb?BBOX=-180,-90,180,90&metric=false&WIDTH=1440&HEIGHT=721&REQUEST=GetData&float_width=16&version=latest&encoding=gzip`;
     }
     console.log("url:", url);
 

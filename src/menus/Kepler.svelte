@@ -99,9 +99,12 @@
   let { signal } = controller;
 
   const fetchKeplerTemp = async () => {
+    let refDate = await fetchJson('http://localhost:5173/prd.json');
+    let refObj = refDate.filter((item) => item.name == keplerTemp.model)
+    keplerTemp.reference_time = refObj ? refObj[0].reference_time : $currentDate
     console.log(keplerTemp)
-    let res = await griddedDataset.fetchData($currentDate, signal, keplerTemp)
-    console.log(res)
+    // let res = await griddedDataset.fetchData($currentDate, signal, keplerTemp)
+    // console.log(res)
   }
 </script>
 
