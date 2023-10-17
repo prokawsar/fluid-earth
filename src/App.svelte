@@ -111,36 +111,25 @@
   let ourPins = [];
   let cursor = null;
 
+  let keplerTemp = { model: '', elev: '', vaar: '', title: ''};
+
   const fetchMetaJson = async () => {
     let meta = await fetchJson('http://localhost:5173/meta.json');
     let layer = JSON.parse(meta.layerDtos[0].definition);
     // console.log("meta", JSON.parse(meta.layerDtos[0].definition))
-    let model, elev, vaar, title;
-    model = layer.layers[0].model;
-    elev = layer.layers[0].elev;
-    vaar = layer.layers[0].var;
-    title = layer.title;
+    keplerTemp.model = layer.layers[0].model;
+    keplerTemp.elev = layer.layers[0].elev;
+    keplerTemp.vaar = layer.layers[0].var;
+    keplerTemp.title = layer.title;
 
     return {
-      title, elev, vaar, model
+      ...keplerTemp
     }
   }
   fetchMetaJson().then(data => {
     console.log(data)
   });
-  onMount(async () => {
-    // loading meta.json
-    // let meta = await fetchJson('http://localhost:5173/meta.json');
-    // let layer = JSON.parse(meta.layerDtos[0].definition);
-    // // console.log("meta", JSON.parse(meta.layerDtos[0].definition))
-    // let model, elev, vaar, title;
-    // model = layer.layers[0].model;
-    // elev = layer.layers[0].elev;
-    // vaar = layer.layers[0].var;
-    // title = layer.title;
 
-    // console.log(title, elev, vaar, model)
-  })
   $: portraitBasedZoom = $mobile;
 
   $: menus = [
@@ -361,6 +350,8 @@
       bind:ourPins
       {griddedData}
       {griddedUnit}
+      bind:griddedDataset
+      bind:keplerTemp
     />
   </Menu>
   <Menu bind:openedMenu menuName="Feedback">

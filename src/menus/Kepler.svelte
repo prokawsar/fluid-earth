@@ -8,6 +8,7 @@
   import { cubicOut } from 'svelte/easing';
   import Button from '../components/Button.svelte';
   import { slide, fade } from 'svelte/transition';
+  import { currentDate } from '../stores.js';
 
   export let centerLongitude;
   export let centerLatitude;
@@ -15,6 +16,10 @@
   export let ourPins;
   export let griddedData;
   export let griddedUnit;
+  export let griddedDataset;
+  export let keplerTemp;
+
+  // console.log(griddedDataset)
 
   let radars;
   let radarPins = [];
@@ -89,6 +94,15 @@
   }
 
   let kepler;
+
+  let controller = new AbortController();
+  let { signal } = controller;
+
+  const fetchKeplerTemp = async () => {
+    console.log(keplerTemp)
+    let res = await griddedDataset.fetchData($currentDate, signal, keplerTemp)
+    console.log(res)
+  }
 </script>
 
 <Button action={loadData} full tip={radars ? '' : 'dev.json'}>
@@ -110,5 +124,5 @@
 <ChipGroup
   options={['Wind', 'Temperature']}
   bind:selected={kepler}
-  on:select={() => console.log(kepler)}
+  on:select={fetchKeplerTemp}
 />
