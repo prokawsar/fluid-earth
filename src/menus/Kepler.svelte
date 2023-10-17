@@ -125,7 +125,8 @@
 <hr />
 <h3>Temperature</h3>
 <ChipGroup
-  options={['Wind', 'Temperature']}
+  isKepler
+  options={[keplerTemp.title]}
   bind:selected={kepler}
   on:select={fetchKeplerTemp}
 />

@@ -3,8 +3,9 @@
   import { modulo } from '../math.js';
   import { createEventDispatcher } from 'svelte';
 
+  export let isKepler = false;
   export let options = ['test option'];
-  export let selected = options[0];
+  export let selected = isKepler ? '' : options[0];
   export let iconsMap = {};
   export let nowrap = false;
 
