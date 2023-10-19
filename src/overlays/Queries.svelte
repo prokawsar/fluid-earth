@@ -1,9 +1,11 @@
 <script>
   import Pin from '../components/Pin.svelte';
+  import OurPin from '../components/OurPin.svelte';
   import HoverBubble from '../components/HoverBubble.svelte';
 
   export let forwardProjectionFunction;
   export let pins;
+  export let ourPins = [];
   export let cursor;
   export let griddedName;
   export let griddedData;
@@ -13,10 +15,13 @@
   export let griddedColormap;
 
   export let kioskMode;
+
+  console.log("ourpins", ourPins)
 </script>
 
 <div>
   {#if !kioskMode}
+    {#if pins.length}
     {#each pins as pin (pin)}
       <Pin
         bind:pins
@@ -27,6 +32,19 @@
         {griddedUnit}
       />
     {/each}
+    {/if}
+    <!-- {#if ourPins.length} -->
+    {#each ourPins as pin (pin)}
+      <OurPin
+        bind:pins={ourPins}
+        {pin}
+        {forwardProjectionFunction}
+        {griddedName}
+        {griddedData}
+        {griddedUnit}
+      />
+    {/each}
+    <!-- {/if} -->
   {/if}
   {#if cursor}
     <HoverBubble

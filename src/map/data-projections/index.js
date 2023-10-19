@@ -13,7 +13,7 @@ export default Object.freeze({
       const hRes = (data.height - 1) / 180;
 
       const col = Math.round((lonLat[0] + 360) * wRes) % data.width;
-      const row = (data.height - 1) - Math.round((lonLat[1] + 90) * hRes);
+      const row = data.height - 1 - Math.round((lonLat[1] + 90) * hRes);
 
       return row * data.width + col;
     },
@@ -37,8 +37,10 @@ export default Object.freeze({
       const hRes = data.height / 180;
 
       const col = Math.floor((lonLat[0] + 360) * wRes) % data.width;
-      const row =
-        Math.min(Math.floor((lonLat[1] + 90) * hRes), data.height - 1);
+      const row = Math.min(
+        Math.floor((lonLat[1] + 90) * hRes),
+        data.height - 1
+      );
 
       return row * data.width + col;
     },
@@ -70,7 +72,7 @@ export default Object.freeze({
   PERMAFROST: {
     id: 4,
     function: (data, lonLat) => {
-      lonLat = lonLat.map(v => v * Math.PI / 180);
+      lonLat = lonLat.map((v) => (v * Math.PI) / 180);
 
       // See GLSL implementation for details
 
@@ -80,19 +82,19 @@ export default Object.freeze({
       const P = Math.exp(e * Math.atanh(e * Math.sin(lonLat[1])));
       const x = (1 + Math.sin(lonLat[1])) / P;
       const y = (1 - Math.sin(lonLat[1])) * P;
-      const cosChi = 2.0 * Math.cos(lonLat[1]) / (x + y);
+      const cosChi = (2.0 * Math.cos(lonLat[1])) / (x + y);
       const sinChi = (x - y) / (x + y);
 
       const k71 = 1.9390295659155423;
-      const m = k71 * a * cosChi / (1 + sinChi);
+      const m = (k71 * a * cosChi) / (1 + sinChi);
 
       let col = m * Math.sin(lonLat[0]);
       let row = -m * Math.cos(lonLat[0]);
 
       let res = data.width === 4485 ? 5 : 10;
 
-      col = Math.floor((col + 10389109.8424841110) / 926.6254331383 / res);
-      row = Math.floor(-(row - 9199572.4044017550) / 926.6254331383 / res);
+      col = Math.floor((col + 10389109.842484111) / 926.6254331383 / res);
+      row = Math.floor(-(row - 9199572.404401755) / 926.6254331383 / res);
 
       return row * data.width + col;
     },
@@ -126,7 +128,7 @@ export function pairedArrayDataGet(particleData, lonLat) {
     particleData.uVelocities[index],
     particleData.vVelocities[index],
   ];
-  return values.map(value => {
+  return values.map((value) => {
     const nan = value === Number.NEGATIVE_INFINITY || value === undefined;
     return nan ? NaN : value;
   });
