@@ -60,6 +60,7 @@
 
   export let vectorData = { objects: {} };
   export let vectorColors = {};
+  export let customVector = { geometries: [] }
 
   let clientWidth, clientHeight;
 
@@ -117,6 +118,7 @@
   $: mapBackground.scale = griddedScale;
   $: mapBackground.baseColor = griddedBaseColor;
   $: mapBackground.vectorData = vectorData;
+  $: mapBackground.customVector = customVector;
 
   let particleSimulator = {};
   $: particleSimulator.data = particleData;
@@ -162,6 +164,7 @@
       scale: griddedScale,
       baseColor: griddedBaseColor,
       vectorData: vectorData,
+      customVector: customVector
     });
 
     particleSimulator = new ParticleSimulator(particleGl, {
